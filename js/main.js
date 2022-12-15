@@ -103,3 +103,12 @@ btnAgregar.addEventListener ("click", function (event) {
     txtNombre.focus();
    
 })
+
+txtNombre.addEventListener("blur",function (event) {
+    event.preventDefault
+    txtNombre.value= txtNombre.value.trim();
+})
+txtNumber.addEventListener("blur",function (event) {
+    event.preventDefault
+    txtNumber.value= txtNumber.value.trim();
+})
