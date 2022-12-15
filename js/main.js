@@ -26,6 +26,7 @@ let costoTotal=0;
 let precioTotal = document.getElementById("precioTotal");
 let precio =0;
 let cantidad =0;
+let datos=[];//new Array();
 
 //genera un precio al azar
 function getPrecio() {
@@ -90,13 +91,27 @@ btnAgregar.addEventListener ("click", function (event) {
     costoTotal += precio*cantidad;
     precioTotal.innerHTML = "$ "+ costoTotal.toFixed(2);
 
+    localStorage.setItem("contadorProductos", contador);
+    localStorage.setItem("totalEnProductos", totalEnProductos);
+    localStorage.setItem("costoTotal",costoTotal)
+
     let row = `<tr>
         <td>${contador}</td>
         <td>${txtNombre.value}</td>
         <td>${txtNumber.value}</td>
         <td>${precio}</td>
-    </tr>`
+    </tr>`;
     cuerpoTabla[0].insertAdjacentHTML("beforeend",row);
+    let elemento = `{ 
+        "id": ${contador},
+        "nombre":"${txtNombre.value}",
+        "cantidad":${txtNumber.value},
+        "precio":${precio}
+    }`;//   JSON
+    
+    datos.push(JSON.parse(elemento));
+    console.log(datos);
+    localStorage.setItem("datos", JSON.stringify(datos))
 
     txtNombre.value="";
     txtNumber.value="";
@@ -111,4 +126,36 @@ txtNombre.addEventListener("blur",function (event) {
 txtNumber.addEventListener("blur",function (event) {
     event.preventDefault
     txtNumber.value= txtNumber.value.trim();
+})
+
+window.addEventListener("load", function (event) {
+    let tmp= localStorage.getItem("contadorProductos");
+    if (tmp != null) {
+        contador =tmp;
+        contadorProductos.innerHTML= contador;
+    }
+    tmp=localStorage.getItem("totalEnProductos")
+    if (tmp != null) {
+        totalEnProductos=parseInt(tmp);
+        productosTotal.innerHTML = totalEnProductos;
+        
+    }
+    tmp=localStorage.getItem("costoTotal")
+    if (tmp != null) {
+        costoTotal=parseFloat(tmp)
+        precioTotal.innerHTML =`$`+ costoTotal.toFixed(2);
+        
+    }
+    tmp=localStorage.getItem("datos")
+    if (tmp != null) {
+        datos=JSON.parse(tmp)
+        datos.forEach(element => {
+            cuerpoTabla[0].innerHTML += `<tr>
+            <th>${element.id} </th>
+            <td>${element.nombre}</td>
+            <td>${element.cantidad}</td>
+            <td>${element.precio}</td>
+            </tr>`
+        })
+    }
 })
