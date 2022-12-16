@@ -27,6 +27,7 @@ let precioTotal = document.getElementById("precioTotal");
 let precio =0;
 let cantidad =0;
 let datos=[];//new Array();
+let btnClear = document.getElementById ("btnClear");
 
 //genera un precio al azar
 function getPrecio() {
@@ -158,4 +159,15 @@ window.addEventListener("load", function (event) {
             </tr>`
         })
     }
+})
+
+btnClear.addEventListener("click", function (event) {
+    event.preventDefault;
+    localStorage.clear ();
+    precioTotal.innerHTML="$0";
+    productosTotal.innerHTML="0";
+    contadorProductos.innerHTML="0";
+    cuerpoTabla[0].innerHTML=("");
+    
+
 })
